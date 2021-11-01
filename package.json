@@ -3,14 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "serve": "next start -p $PORT",
-    "export": "next export",
-    "postbuild": "next-sitemap"
+    "dev": "SET NODE_OPTIONS=--openssl-legacy-provider && next dev",
+    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && next build",
+    "serve": "SET NODE_OPTIONS=--openssl-legacy-provider && next start -p $PORT",
+    "export": "SET NODE_OPTIONS=--openssl-legacy-provider && next export"
   },
   "engines": {
-    "node": "10.19.0"
+    "node": "17.0.1"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.16",

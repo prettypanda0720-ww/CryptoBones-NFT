@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "serve": "next start -p $PORT",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "export": "next export"
   },
   "engines": {

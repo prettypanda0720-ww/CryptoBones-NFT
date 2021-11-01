@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "EXPORT SET NODE_OPTIONS=--openssl-legacy-provider && next dev",
-    "build": "EXPORT SET NODE_OPTIONS=--openssl-legacy-provider && next build",
-    "serve": "EXPORT SET NODE_OPTIONS=--openssl-legacy-provider && next start -p $PORT",
-    "export": "EXPORT SET NODE_OPTIONS=--openssl-legacy-provider && next export",
+    "dev": "next dev",
+    "build": "next build",
+    "serve": "next start -p $PORT",
+    "export": "next export",
     "postbuild": "next-sitemap"
   },
   "engines": {

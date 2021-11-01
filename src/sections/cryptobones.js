@@ -91,26 +91,6 @@ const data = [
         link: 'http://dribbble.com',
       },
     ],
-  },
-  {
-    id: 5,
-    avatar: avatar5,
-    name: 'Yamilet Hooker',
-    designation: 'User interface designer',
-    socialLinks: [
-      {
-        name: 'twitter',
-        link: 'http://twitter.com',
-      },
-      {
-        name: 'github',
-        link: 'http://github.com',
-      },
-      {
-        name: 'dribbble',
-        link: 'http://dribbble.com',
-      },
-    ],
   }
 ];
 

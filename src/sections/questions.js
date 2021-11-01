@@ -127,11 +127,9 @@ const styles = {
     fontWeight: '350px',
   },
   editContainer: {
-    padding: '20px',
-    paddingTop: '20px',
-    paddingBottom: '20px',
+    padding: '20px !important',
     boxShadow: '0px 0px 4px 3px rgba(0, 0, 0, 0.1)',
-    color: '#4255BB',
+    color: '#243383',
     background: '#E1EFF4',
     borderRadius: '15px',
     width: '100%',

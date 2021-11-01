@@ -1,0 +1,1 @@
+export const AuctionNFTContractAddress = "0xCa02c82cc14CDCC2F577C66DeAD8A3F2e3f2A3b7";

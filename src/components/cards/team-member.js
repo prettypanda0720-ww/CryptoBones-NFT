@@ -46,7 +46,7 @@ const styles = {
   },
   image: {
     borderRadius: '15px',
-    border: 'solid 3px #159EEC',
+    border: 'solid 3px #C8C7C7',
     height: '300px'
   },
   about: {

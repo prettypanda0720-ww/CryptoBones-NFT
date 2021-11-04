@@ -1,14 +1,17 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx, Box, Container, Text, Button, Input, Slider } from 'theme-ui';
+import { jsx, Box, Container, Text, Input } from 'theme-ui';
 import CountdownTimer from "react-component-countdown-timer";
 import Snackbar from '@mui/material/Snackbar';
+import Slider from '@mui/material/Slider';
+import Button from '@mui/material/Button';
 import MuiAlert from '@mui/material/Alert';
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import { utils } from "ethers";
 import { GetCurrentStage, GetCurrentPrice, UseCryptoBones } from 'hooks';
 import bannerIllustration from 'assets/images/banner-illustration.png'
+import { isNullOrUndefined } from 'util';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -144,9 +147,11 @@ const Banner = () => {
       case 1:
         return (
             <Box sx={styles.mintArea}>
+              <Text sx={styles.priceTypography}>You can mint with 0.5ETH</Text>
               <Button
-                sx={styles.mintBtn}
-                variant="contained"
+                style={styles.mintBtn}
+                variant="outlined"
+                size="large"
                 onClick={onPresaleMint}
                 >
                 Presale
@@ -163,13 +168,13 @@ const Banner = () => {
             <Box sx={{marginTop: '10px'}}>
               <CountdownTimer count={14400} showTitle size={28} labelSize={16} color="#27bf65"  backgroundColor="transparent" hideDay={true} onEnd={showAuctionEndMsg}/>
             </Box>
-            <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <Slider defaultValue={1} min={1} max={10} onChange={(event) => {setMintCount(event.target.value)}} />
-              <Input sx={styles.sliderInput} disabled value={mintCount} />
+            <Box sx={{marginTop: '10px'}}>
+              <Slider size="large" defaultValue={1} min={1} max={10} style={{width: '150px', color: '#C8C7C7'}} valueLabelDisplay="auto" onChange={(event) => {setMintCount(event.target.value)}} />
             </Box>
             <Button
-              sx={styles.mintBtn, {marginTop: '20px'}}
-              variant="contained"
+              style={styles.mintBtn}
+              variant="outlined"
+              size="large"
               onClick={onPublicMint}
               disabled={isPublicMint}>
               Public Mint
@@ -182,8 +187,9 @@ const Banner = () => {
           <Box sx={styles.countDownArea}>
               <CountdownTimer count={172800} showTitle size={28} labelSize={16} color="#27bf65"  backgroundColor="transparent" onEnd={showNormalEndMsg}/>
               <Button
-                  sx={styles.mintBtn, {marginTop: '10px'}}
-                  variant="contained"
+                  style={styles.mintBtn}
+                  variant="outlined"
+                  size="large"
                   onClick={onNormalMint}
                   disabled={isNormalMint}>
                   Normal Mint
@@ -226,8 +232,9 @@ export default Banner;
 const styles = {
   section: {
     position: 'relative',
+    backgroundColor: 'rgb(0,0,0)',
     pt: [105, null, null, 140, 15, null, 140],
-    pb: [8, null, null, 70, 15, null, 70],
+    pb: [8, null, null, null, null, null, null],
     zIndex: 0,
     // backgroundImage: `url(${bannerIllustration})`,
     backgroundRepeat: 'no-repeat',
@@ -280,11 +287,14 @@ const styles = {
   },
   priceTypography: {
     fontSize: [5, null, null, 7, 7, 8, 8],
-    color: '#27bf65',
+    color: 'white',
     fontWeight: '400'
   },
   mintArea: {
-    border: 'solid 2px #00E4FF !important',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#292827',
     borderRadius: '20px',
     pt: [2, null, null, 5, 6, 6, 6],
     pb: [2, null, null, 5, 6, 6, 6],
@@ -292,14 +302,21 @@ const styles = {
     pr: [3, null, null, 10, 10, 10, 10],
   },
   mintBtn: {
-    backgroundColor: 'rgba(255,255,255, 0.5)',
+    marginTop: '20px',
+    backgroundColor: 'white',
     color: 'black',
+    border: '#292827',
     width: [150, 150, 150, 150, 160, 160, 160],
     '&:hover': {
-      backgroundColor: 'rgba(255,255,255)',
+      backgroundColor: 'rgba(255,255,255, 0.6)',
     }
   },
   countDownArea: {
+    paddingTop: '20px',
+    width: [300, 300, 300, 300, 310, 310, 310],
+    paddingBottom: '20px',
+    backgroundColor: '#292827',
+    borderRadius: '20px',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column'

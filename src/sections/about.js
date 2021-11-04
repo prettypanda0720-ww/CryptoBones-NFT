@@ -4,9 +4,6 @@ import { jsx, Box, Container, Divider } from 'theme-ui';
 import { rgba } from 'polished';
 import SectionHeading from 'components/section-heading';
 import Service from 'components/cards/service';
-// import icon1 from 'assets/images/icons/service1.png';
-// import icon2 from 'assets/images/icons/service2.png';
-// import icon3 from 'assets/images/icons/service3.png';
 
 const data = [
   {
@@ -52,7 +49,7 @@ export default About;
 
 const styles = {
   section: {
-    // backgroundColor: rgba('#FFF5ED', 0.5),
+    backgroundColor: 'rgb(0,0,0)',
     pt: [5, 5, 5, 7, 7, 8, 9],
     pb: [5, 5, 5, 7, 7, 8, 9],
   },

@@ -38,7 +38,7 @@ const styles = {
   footer: {
     pt: [2],
     pb: [2],
-    backgroundColor: 'rgb(22,41,91)'
+    backgroundColor: '#292827'
   },
   footerTopInner: {
     gap: [30, null, 50, '20px 50px', 17, 50],

@@ -23,9 +23,9 @@ const styles = {
     margin: ['0 auto 60px'],
   },
   title: {
-    color: 'rgb(0,0,0)',
-    fontFamily: 'heading',
+    color: '#FEFEFE',
     fontWeight: 700,
+    fontFamily: "inherit",
     fontSize: [5, null, null, 26, null, 30, 9],
     lineHeight: [1.33, 1.33, 1.48],
     letterSpacing: ['-0.5px', null, null, null, null, null, '-1px'],
@@ -43,7 +43,7 @@ const styles = {
     margin: '15px auto 0',
   },
   dividerStyle: {
-    backgroundColor: 'rgba(0,0,0,0.5) !important',
+    backgroundColor: '#FEFEFE !important',
     height: '3px'
   }
 };

@@ -58,10 +58,10 @@ export default function Header() {
 
 const styles = {
   headerWrapper: {
-    backgroundColor: '#1F2B6C !important',
+    backgroundColor: '#292827 !important',
     '.is-sticky': {
       header: {
-        backgroundColor: '#1F2B6C !important',
+        backgroundColor: '#292827 !important',
         boxShadow: '0 6px 13px rgba(22,41,91,0.1)',
         paddingTop: '15px',
         paddingBottom: '15px',
@@ -74,9 +74,9 @@ const styles = {
     right: 0,
     py: 4,
     transition: 'all 0.3s ease-in-out 0s',
-    backgroundColor: '#1F2B6C !important',
+    backgroundColor: '#292827 !important',
     '&.is-mobile-menu': {
-      backgroundColor: '#1F2B6C !important',
+      backgroundColor: '#292827 !important',
     },
   },
   headerInner: {

@@ -222,6 +222,7 @@ export default CryptoBones;
 
 const styles = {
   section: {
+    backgroundColor: 'rgb(0,0,0)',
     pt: [7],
     pb: [11, null, null, 11, null, 11],
   },

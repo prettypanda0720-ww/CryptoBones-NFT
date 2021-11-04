@@ -35,7 +35,7 @@ const Questions = () => {
                     <AccordionItem>
                         <h2>
                         <AccordionButton sx={styles.accodian}>
-                            <Box flex="1" textAlign="left" sx={styles.titleGroup}>
+                            <Box flex="1" textAlign="left">
                             What is the price of a CryptoBone?
                             </Box>
                             <AccordionIcon />
@@ -99,38 +99,32 @@ export default Questions;
 
 const styles = {
   section: {
-    backgroundColor: '#F9FAFC',
+    backgroundColor: 'rgb(0,0,0)',
     pt: [9, 9, 9, 11],
     pb: [9, 9, 9, 12, 12, 14],
-    backgroundImage: `url(${roadmap})`
+    // backgroundImage: `url(${roadmap})`
   },
   accodian: {
     width: '100%',
     height: '46px',
-    background: '#E1EFF4',
+    background: '#292827',
     borderRadius: '15px',
     display: 'flex',
     justifyContent: 'space-between',
     paddingLeft: '14px',
     paddingRight: '14px',
     alignItems: 'center',
-    color: '#1F2B6C',
+    color: 'white',
     boxShadow: '0px 0px 4px 3px rgba(0, 0, 0, 0.1)',
     '&:hover': {
         cursor: 'pointer',
     }
   },
-  titleGroup: {
-    color: '#1F2B6C',
-    fontFamily: 'Gotham Rounded',
-    fontSize: '15px',
-    fontWeight: '350px',
-  },
   editContainer: {
     padding: '20px !important',
     boxShadow: '0px 0px 4px 3px rgba(0, 0, 0, 0.1)',
-    color: '#243383',
-    background: '#E1EFF4',
+    color: '#C7C7C7',
+    background: '#292827',
     borderRadius: '15px',
     width: '100%',
     fontWeight: '350px',

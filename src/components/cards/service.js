@@ -23,11 +23,11 @@ export default Service;
 const styles = {
   serviceItem: {
     pt: [3,3,3,3,3,3,3],
-    pl: [3,3,3,3,3,3,3],
+    pl: [4,4,4,4,4,4,4],
     pr: [3,3,3,3,3,3,3],
     pb: [3,3,3,3,3,3,3],
     borderRadius: '15px',
-    backgroundColor: '#1F2B6C',
+    backgroundColor: '#292827',
     display: [null, null, null, null, null, 'flex'],
     textAlign: ['center', null, null, null, null, 'left'],
   },
@@ -48,7 +48,7 @@ const styles = {
       lineHeight: [1.68],
     },
     p: {
-      color: '#B2C5F5',
+      color: '#C7C7C7',
       fontSize: [1, null, null, null, 2],
       lineHeight: [1.88],
       mt: [2],

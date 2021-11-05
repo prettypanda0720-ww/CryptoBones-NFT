@@ -104,12 +104,38 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "currPrice",
-        "type": "uint256"
+        "internalType": "bool",
+        "name": "result",
+        "type": "bool"
       }
     ],
-    "name": "currePrice",
+    "name": "normalsaleSuccess",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "result",
+        "type": "bool"
+      }
+    ],
+    "name": "presaleSuccess",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "result",
+        "type": "bool"
+      }
+    ],
+    "name": "publicsaleSuccess",
     "type": "event"
   },
   {

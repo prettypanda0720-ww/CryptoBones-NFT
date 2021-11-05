@@ -101,7 +101,7 @@ import {
                 </Text>
               </Flex>
               <Flex alignContent="center" m={3}>
-                <Button
+                {/* <Button
                   variant="link"
                   color="gray.400"
                   fontWeight="normal"
@@ -113,12 +113,12 @@ import {
                 >
                   <CopyIcon mr={1} />
                   Copy Address
-                </Button>
+                </Button> */}
                 <Link
                   fontSize="sm"
                   display="flex"
                   alignItems="center"
-                  href={`https://ropsten.etherscan.io/address/${account}`}
+                  href={`https://rinkeby.etherscan.io/address/${account}`}
                   isExternal
                   color="gray.400"
                   ml={6}
@@ -134,7 +134,7 @@ import {
             </Box>
           </ModalBody>
   
-          <ModalFooter
+          {/* <ModalFooter
             justifyContent="end"
             background="gray.700"
             borderBottomLeftRadius="3xl"
@@ -149,7 +149,7 @@ import {
             >
               Your transactions willl appear here...
             </Text>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
     );

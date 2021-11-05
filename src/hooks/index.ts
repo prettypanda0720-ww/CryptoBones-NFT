@@ -7,6 +7,17 @@ import { AuctionNFTContractAddress } from "../contracts";
 const auctionContractInterface = new ethers.utils.Interface(AuctionNFTAbi);
 const auctionContract = new Contract(AuctionNFTContractAddress, auctionContractInterface);
 
+export function GetTotalMigrate(owner: any) {
+  const [balance]: any =
+    useContractCall({
+      abi: auctionContractInterface,
+      address: AuctionNFTContractAddress,
+      method: "balanceOf",
+      args: [owner],
+    }) ?? [];
+  return balance;
+}
+
 export function GetTotalSupply() {
   const [balance]: any =
     useContractCall({
@@ -15,7 +26,6 @@ export function GetTotalSupply() {
       method: "totalSupply",
       args: [],
     }) ?? [];
-  console.log(balance);
   return balance;
 }
 
@@ -27,7 +37,6 @@ export function GetCurrentStage() {
       method: "getCurrentStage",
       args: [],
     }) ?? [];
-  console.log(stage);
   return stage;
 }
 
@@ -39,7 +48,6 @@ export function GetCurrentPrice() {
         method: "getCurrentPrice",
         args: [],
       }) ?? [];
-    console.log(currPrice);
     return currPrice;
 }
 
@@ -56,7 +64,6 @@ export function GetNormalMintingAvailableTime() {
         method: "getNormalMintingAvailableTime",
         args: [],
       }) ?? [];
-    console.log(normalMintingTime);
     return normalMintingTime;
 }
 
@@ -68,7 +75,6 @@ export function GetPublicMintingAvailableTime() {
       method: "getPublicMintingAvailableTime",
       args: [],
     }) ?? [];
-  console.log(publicMintingTime);
   return publicMintingTime;
 }
 
@@ -80,6 +86,5 @@ export function GetMaxMintCount() {
       method: "getMaxMintCount",
       args: [],
     }) ?? [];
-  console.log(maxMintCount);
   return maxMintCount;
 }

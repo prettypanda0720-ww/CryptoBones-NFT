@@ -31,21 +31,11 @@ export default function Header() {
                       </li>
                     ))}
                   </Box>
-                  {/* <ChakraProvider>
-                    <ConnectButton handleOpenModal={onOpen} sx={styles.getStartedDesktop}/>
-                    <AccountModal isOpen={isOpen} onClose={onClose} />
-                  </ChakraProvider> */}
-                  {/* <Button variant="text" sx={styles.getStartedDesktop}>
-                    Get Started
-                  </Button> */}
                 </Box>
                 <ChakraProvider>
                   <ConnectButton handleOpenModal={onOpen} sx={styles.getStartedMobile}/>
                   <AccountModal isOpen={isOpen} onClose={onClose} />
                 </ChakraProvider>
-                {/* <Button variant="text" sx={styles.getStartedMobile}>
-                  Get Started
-                </Button> */}
                 <NavbarDrawer />
               </Box>
             </Container>

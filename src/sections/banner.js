@@ -6,13 +6,11 @@ import Snackbar from '@mui/material/Snackbar';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
 import MuiAlert from '@mui/material/Alert';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useEthers } from "@usedapp/core";
 import * as React from 'react';
 import { utils } from "ethers";
-import { GetCurrentStage, GetCurrentPrice, UseCryptoBones } from 'hooks';
-import bannerIllustration from 'assets/images/banner-illustration.png'
-import { isNullOrUndefined } from 'util';
-
+import { GetTotalMigrate, GetMaxMintCount, GetCurrentStage, GetCurrentPrice, GetPublicMintingAvailableTime, GetNormalMintingAvailableTime, UseCryptoBones } from 'hooks';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -20,6 +18,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Banner = () => {
 
+  const { account } = useEthers();
+  const balance = GetTotalMigrate(account);
+  const maxCount = GetMaxMintCount();
+  const [currentBalance, setCurrentBalance] = useState(0)
+  const [currentMaxCount, setCurrentMaxCount] = useState(0)
   const [open, setOpen] = React.useState(false);
   const [mintCount, setMintCount] = React.useState(1);
   const [msg, setMsg] = useState('');
@@ -29,16 +32,44 @@ const Banner = () => {
   const [isNormalMint, setIsNormalMint] = useState(false);
   
   const [currStage, setCurrStage] = useState(0)
+
   const value = GetCurrentStage()
-  console.log('current stage', value)
+  
   const [currPrice, setCurrPrice] = useState(0)
   const price = GetCurrentPrice()
+
+  // const a = GetNormalMintingAvailableTime()
+  // const [publicAvailableTime, setPublicAvailableTime] = useState(-1)
+  // if(publicAvailableTime == -1){
+  //   const publicPeriod = GetPublicMintingAvailableTime()
+  //   if(publicPeriod !== undefined && publicAvailableTime == -1) {
+  //     setPublicAvailableTime(publicPeriod.toNumber())
+  //   }
+  //   console.log('public period', publicPeriod)
+  // }
+
+  const [publicAvailableTime, setPublicAvailableTime] = useState(-1)
+  
+  const publicPeriod = GetPublicMintingAvailableTime()
+  
+  const [normalAvailableTime, setNormalAvailableTime] = useState(-1)
+  
+  const normalPeriod = GetNormalMintingAvailableTime()
   
   useEffect(()=> { setCurrStage(value ? value.toNumber() : 0) }, [value])
 
   useEffect(()=> { setCurrPrice(price ? utils.formatEther(price) : 0) }, [price])
 
+  useEffect(()=> { setNormalAvailableTime(normalPeriod ? normalPeriod.toNumber() : 0) }, [normalPeriod])
+
+  useEffect(()=> { setPublicAvailableTime(publicPeriod ? publicPeriod.toNumber() : 0) }, [publicPeriod])
+
+  useEffect(()=> { setCurrentBalance(balance ? balance.toNumber() : 0) }, [balance])
+
+  useEffect(()=> { setCurrentMaxCount(maxCount ? maxCount.toNumber() : 0) }, [maxCount])
+
   useEffect(()=> { doPostTransaction(currStage) }, [currStage])
+
 
   const { state: presaleRes, send: requestPresaleToken } = UseCryptoBones("requestPresaleToken")
     
@@ -74,25 +105,38 @@ const Banner = () => {
     let msg = "";
     switch (res.status) {
       case "Success":
+        console.log('Success transaction', res.transaction)
+        console.log('Success receipt', res.receipt)
         msg = "Minting transaction success!"
+        setOpen(true)
+        setMsg(msg)
         break
       case "None":
-        msg = "Transaction Success!"
+        console.log('None transaction', res.transaction)
         break
       case "Mining":
+        console.log('Mining transaction', res.transaction)
         msg = "Minting now";
+        setOpen(true)
+        setMsg(msg)
         break
-      case "Fail":
+      case "Failed":
+        console.log('Failed transaction', res.transaction)
+        console.log('Failed receipt', res.receipt)
         msg = "Minting transaction failed";
+        setOpen(true)
+        setMsg(msg)
         break;
       case "Exception":
-        msg = "You may have below errors! `insufficient funds`, `unregistered in whitelist`, `overflow 10 tokens`"
+        console.log('Exception errorMessage', res.errorMessage)
+        // msg = "Mint Failed, Note: You have insufficient funds, or You aren't registered in whitelist, or You have already 10 tokens"
+        msg = "Transaction Error!"
+        setOpen(true)
+        setMsg(msg)
         break
       default:
         break  
     }
-    setOpen(true)
-    setMsg(msg)  
   }
 
   function showAuctionEndMsg() {
@@ -112,19 +156,37 @@ const Banner = () => {
   }
 
   async function onPresaleMint() {
+    if(currentBalance >= currentMaxCount) {
+      setOpen(true)
+      setMsg("Overflow " + currentMaxCount.toString() + " Max Tokens. You can't mint anymore.")
+      return
+    }
     await requestPresaleToken({value: utils.parseEther("0.05")})
+    console.log('presaleResponse', presaleRes)
     showTransactionResult(presaleRes)
   }
 
   async function onPublicMint() {
+    if(currentBalance + mintCount > currentMaxCount) {
+      setOpen(true)
+      setMsg("Overflow " + currentMaxCount.toString() + " Max Tokens")
+      return
+    }
     let price = (currPrice * mintCount).toString()
     console.log('pubilc mint price', price)
-    await requestPublicToken(mintCount, {value: utils.parseEther(price)});
+    await requestPublicToken(mintCount, {value: utils.parseEther(price)})
+    console.log('publicResponse', publicRes)
     showTransactionResult(publicRes)
   }
 
   async function onNormalMint() {
+    if(currentBalance >= currentMaxCount) {
+      setOpen(true)
+      setMsg("Overflow " + maxCount.toString() + " Max Tokens. You can't mint anymore.")
+      return
+    }
     await requestNormalToken({value: utils.parseEther("0.05")})
+    console.log('normalResponse', normalRes)
     showTransactionResult(normalRes)
   }
 
@@ -147,7 +209,7 @@ const Banner = () => {
       case 1:
         return (
             <Box sx={styles.mintArea}>
-              <Text sx={styles.priceTypography}>You can mint with 0.5ETH</Text>
+              <Text sx={styles.priceTypography}>You can mint with 0.05ETH</Text>
               <Button
                 style={styles.mintBtn}
                 variant="outlined"
@@ -166,7 +228,8 @@ const Banner = () => {
               <Text sx={styles.priceTypography}>{currPrice.toString().substr(0,6)} ETH</Text>
             </Box>
             <Box sx={{marginTop: '10px'}}>
-              <CountdownTimer count={14400} showTitle size={28} labelSize={16} color="#27bf65"  backgroundColor="transparent" hideDay={true} onEnd={showAuctionEndMsg}/>
+              { PublicCountDown() }
+              
             </Box>
             <Box sx={{marginTop: '10px'}}>
               <Slider size="large" defaultValue={1} min={1} max={10} style={{width: '150px', color: '#C8C7C7'}} valueLabelDisplay="auto" onChange={(event) => {setMintCount(event.target.value)}} />
@@ -185,7 +248,7 @@ const Banner = () => {
       case 3:
         return (
           <Box sx={styles.countDownArea}>
-              <CountdownTimer count={172800} showTitle size={28} labelSize={16} color="#27bf65"  backgroundColor="transparent" onEnd={showNormalEndMsg}/>
+              { NormalCountDown() }
               <Button
                   style={styles.mintBtn}
                   variant="outlined"
@@ -207,6 +270,30 @@ const Banner = () => {
           break    
     }
   }
+
+  const NormalCountDown = () => {
+     if(normalAvailableTime !== -1) {
+       return (
+        <CountdownTimer count={normalAvailableTime} showTitle size={28} labelSize={16} color="#27bf65"  backgroundColor="transparent" onEnd={showNormalEndMsg}/>
+       )
+     } else {
+       return (
+        <div>zero</div>
+       )
+     }
+  }
+
+  const PublicCountDown = () => {
+    if(publicAvailableTime !== -1) {
+      return (
+        <CountdownTimer count={publicAvailableTime} showTitle size={28} labelSize={16} color="#27bf65"  backgroundColor="transparent" hideDay={true} onEnd={showAuctionEndMsg}/>
+      )
+    } else {
+      return (
+       <div>zero</div>
+      )
+    }
+ }
 
   return (
     <Box as="section" id="home" sx={styles.section}>

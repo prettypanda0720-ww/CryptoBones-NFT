@@ -19,6 +19,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const Banner = () => {
 
   const { account } = useEthers();
+  console.log('account address', account)
   const balance = GetTotalMigrate(account);
   const maxCount = GetMaxMintCount();
   const [currentBalance, setCurrentBalance] = useState(0)
@@ -37,16 +38,6 @@ const Banner = () => {
   
   const [currPrice, setCurrPrice] = useState(0)
   const price = GetCurrentPrice()
-
-  // const a = GetNormalMintingAvailableTime()
-  // const [publicAvailableTime, setPublicAvailableTime] = useState(-1)
-  // if(publicAvailableTime == -1){
-  //   const publicPeriod = GetPublicMintingAvailableTime()
-  //   if(publicPeriod !== undefined && publicAvailableTime == -1) {
-  //     setPublicAvailableTime(publicPeriod.toNumber())
-  //   }
-  //   console.log('public period', publicPeriod)
-  // }
 
   const [publicAvailableTime, setPublicAvailableTime] = useState(-1)
   
@@ -70,12 +61,26 @@ const Banner = () => {
 
   useEffect(()=> { doPostTransaction(currStage) }, [currStage])
 
+  const [transRes, setTransRes] = useState({})
 
   const { state: presaleRes, send: requestPresaleToken } = UseCryptoBones("requestPresaleToken")
     
   const { state: publicRes, send: requestPublicToken } = UseCryptoBones("requestPublicToken")
 
   const { state: normalRes, send: requestNormalToken } = UseCryptoBones("requestNormalToken")
+
+  useEffect(()=> { setTransRes(presaleRes) }, [presaleRes])
+
+  useEffect(()=> { setTransRes(publicRes) }, [publicRes])
+
+  useEffect(()=> { setTransRes(normalRes) }, [normalRes])
+
+  useEffect(()=> { 
+    if(transRes.status != 'Mining') {
+      console.log('transRes useEffect', transRes)
+      account && showTransactionResult()
+    }
+  }, [transRes])
 
   function doPostTransaction(val) {
     let msg = ""
@@ -100,39 +105,36 @@ const Banner = () => {
     }
   }
 
-  function showTransactionResult(res) {
-    console.log('transaction response', res)
+  function showTransactionResult() {
     let msg = "";
-    switch (res.status) {
+    switch (transRes.status) {
       case "Success":
-        console.log('Success transaction', res.transaction)
-        console.log('Success receipt', res.receipt)
         msg = "Minting transaction success!"
         setOpen(true)
         setMsg(msg)
         break
       case "None":
-        console.log('None transaction', res.transaction)
+        // console.log('None transaction', res.transaction)
         break
       case "Mining":
-        console.log('Mining transaction', res.transaction)
-        msg = "Minting now";
-        setOpen(true)
-        setMsg(msg)
+        // console.log('Mining transaction', res.transaction)
+        // msg = "Minting now";
+        // setOpen(true)
+        // setMsg(msg)
         break
       case "Failed":
-        console.log('Failed transaction', res.transaction)
-        console.log('Failed receipt', res.receipt)
-        msg = "Minting transaction failed";
-        setOpen(true)
-        setMsg(msg)
+        // console.log('Failed transaction', res.transaction)
+        // console.log('Failed receipt', res.receipt)
+        // msg = "Minting transaction failed";
+        // setOpen(true)
+        // setMsg(msg)
         break;
       case "Exception":
-        console.log('Exception errorMessage', res.errorMessage)
-        // msg = "Mint Failed, Note: You have insufficient funds, or You aren't registered in whitelist, or You have already 10 tokens"
-        msg = "Transaction Error!"
-        setOpen(true)
-        setMsg(msg)
+        // console.log('Exception errorMessage', res.errorMessage)
+        // // msg = "Mint Failed, Note: You have insufficient funds, or You aren't registered in whitelist, or You have already 10 tokens"
+        // msg = "Transaction Error!"
+        // setOpen(true)
+        // setMsg(msg)
         break
       default:
         break  
@@ -162,8 +164,8 @@ const Banner = () => {
       return
     }
     await requestPresaleToken({value: utils.parseEther("0.05")})
-    console.log('presaleResponse', presaleRes)
-    showTransactionResult(presaleRes)
+    console.log('TransResult', transRes)
+    // showTransactionResult()
   }
 
   async function onPublicMint() {
@@ -175,8 +177,8 @@ const Banner = () => {
     let price = (currPrice * mintCount).toString()
     console.log('pubilc mint price', price)
     await requestPublicToken(mintCount, {value: utils.parseEther(price)})
-    console.log('publicResponse', publicRes)
-    showTransactionResult(publicRes)
+    console.log('publicResponse', transRes)
+    showTransactionResult()
   }
 
   async function onNormalMint() {
@@ -186,8 +188,8 @@ const Banner = () => {
       return
     }
     await requestNormalToken({value: utils.parseEther("0.05")})
-    console.log('normalResponse', normalRes)
-    showTransactionResult(normalRes)
+    console.log('normalResponse', transRes)
+    showTransactionResult()
   }
 
   const handleClose = (event, reason) => {
@@ -198,76 +200,84 @@ const Banner = () => {
   };
 
   const MintButton = () => {
-    switch (currStage) {
-      case 0:
-        return (
-            <Box sx={styles.mintArea}>
-              <Text sx={styles.priceTypography}>Minting is not started yet.</Text>
-            </Box>
-        );
-        break
-      case 1:
-        return (
-            <Box sx={styles.mintArea}>
-              <Text sx={styles.priceTypography}>You can mint with 0.05ETH</Text>
+    if(account === undefined) {
+      return (
+        <Box sx={styles.mintArea}>
+          <Text sx={styles.priceTypography}>Please connect a wallet to mint CryptoBones.</Text>
+        </Box>
+      );
+    } else {
+      switch (currStage) {
+        case 0:
+          return (
+              <Box sx={styles.mintArea}>
+                <Text sx={styles.priceTypography}>Minting is not started yet.</Text>
+              </Box>
+          );
+          break
+        case 1:
+          return (
+              <Box sx={styles.mintArea}>
+                <Text sx={styles.priceTypography}>You can mint with 0.05ETH</Text>
+                <Button
+                  style={styles.mintBtn}
+                  variant="outlined"
+                  size="large"
+                  onClick={onPresaleMint}
+                  >
+                  Presale
+                </Button>
+              </Box>
+          );
+          break
+        case 2:
+          return (
+            <Box sx={styles.countDownArea}>
+              <Box sx={{marginTop: '10px'}}>
+                <Text sx={styles.priceTypography}>{currPrice.toString().substr(0,6)} ETH</Text>
+              </Box>
+              <Box sx={{marginTop: '10px'}}>
+                { PublicCountDown() }
+                
+              </Box>
+              <Box sx={{marginTop: '10px'}}>
+                <Slider size="large" defaultValue={1} min={1} max={10} style={{width: '150px', color: '#C8C7C7'}} valueLabelDisplay="auto" onChange={(event) => {setMintCount(event.target.value)}} />
+              </Box>
               <Button
                 style={styles.mintBtn}
                 variant="outlined"
                 size="large"
-                onClick={onPresaleMint}
-                >
-                Presale
+                onClick={onPublicMint}
+                disabled={isPublicMint}>
+                Public Mint
               </Button>
             </Box>
-        );
-        break
-      case 2:
-        return (
-          <Box sx={styles.countDownArea}>
-            <Box sx={{marginTop: '10px'}}>
-              <Text sx={styles.priceTypography}>{currPrice.toString().substr(0,6)} ETH</Text>
+          );
+          break
+        case 3:
+          return (
+            <Box sx={styles.countDownArea}>
+                { NormalCountDown() }
+                <Button
+                    style={styles.mintBtn}
+                    variant="outlined"
+                    size="large"
+                    onClick={onNormalMint}
+                    disabled={isNormalMint}>
+                    Normal Mint
+                </Button>
             </Box>
-            <Box sx={{marginTop: '10px'}}>
-              { PublicCountDown() }
-              
+          );
+          break
+        case 4:
+          return (
+            <Box sx={styles.mintArea}>
+              <Text sx={styles.priceTypography}>All tokens are sold out.</Text>
             </Box>
-            <Box sx={{marginTop: '10px'}}>
-              <Slider size="large" defaultValue={1} min={1} max={10} style={{width: '150px', color: '#C8C7C7'}} valueLabelDisplay="auto" onChange={(event) => {setMintCount(event.target.value)}} />
-            </Box>
-            <Button
-              style={styles.mintBtn}
-              variant="outlined"
-              size="large"
-              onClick={onPublicMint}
-              disabled={isPublicMint}>
-              Public Mint
-            </Button>
-          </Box>
-        );
-        break
-      case 3:
-        return (
-          <Box sx={styles.countDownArea}>
-              { NormalCountDown() }
-              <Button
-                  style={styles.mintBtn}
-                  variant="outlined"
-                  size="large"
-                  onClick={onNormalMint}
-                  disabled={isNormalMint}>
-                  Normal Mint
-              </Button>
-          </Box>
-        );
-        break
-      case 4:
-        return (
-          <Box sx={styles.mintArea}>
-            <Text sx={styles.priceTypography}>All tokens are sold out.</Text>
-          </Box>
-        );
-      deafult:
-          break    
+          );
+        deafult:
+            break    
+      }
     }
   }
 
@@ -375,7 +385,8 @@ const styles = {
   priceTypography: {
     fontSize: [5, null, null, 7, 7, 8, 8],
     color: 'white',
-    fontWeight: '400'
+    fontWeight: '400',
+    textAlign: 'center'
   },
   mintArea: {
     display: 'flex',

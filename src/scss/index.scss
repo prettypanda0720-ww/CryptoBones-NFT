@@ -126,6 +126,10 @@
     margin: 15px 0;
   }
 
+  .drawer-right.drawer-open .drawer-content-wrapper {
+    width: 200px;
+  }
+
   #__next {
     background-color: #292827;
   }

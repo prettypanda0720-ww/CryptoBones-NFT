@@ -27,7 +27,7 @@ const RoadMap = () => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <h3 style={styles.title}>STAGE ONE</h3>
+              <h3 style={styles.title}>STAGE ONE 0%</h3>
               <p style={styles.description}>0% Giveaway contest ended and winners rewarded<br/>:Pre-sale Minting started at this time.</p>
             </TimelineContent>
           </TimelineItem>
@@ -37,7 +37,7 @@ const RoadMap = () => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <h3 style={styles.title}>STAGE TWO</h3>
+              <h3 style={styles.title}>STAGE TWO 25%</h3>
               <p style={styles.description}>25% 5 random holders will be airdropped a free CryptoBone.</p>
             </TimelineContent>
           </TimelineItem>
@@ -47,7 +47,7 @@ const RoadMap = () => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <h3 style={styles.title}>STAGE THREE</h3>
+              <h3 style={styles.title}>STAGE THREE 75%</h3>
               <p style={styles.description}>75% Work initiated on CryptoBones The Game.</p>
             </TimelineContent>
           </TimelineItem>
@@ -57,7 +57,7 @@ const RoadMap = () => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <h3 style={styles.title}>STAGE FOUR</h3>
+              <h3 style={styles.title}>STAGE FOUR 50%</h3>
               <p style={styles.description}>50% Funds added to Royalty passthrough pool from initial mint.</p>
             </TimelineContent>
           </TimelineItem>
@@ -67,7 +67,7 @@ const RoadMap = () => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <h3 style={styles.title}>STAGE FIVE</h3>
+              <h3 style={styles.title}>STAGE FIVE 100%</h3>
               <p style={styles.description}>100% / maximum of 48 hours after initial mint.<br/>CryptoBones will stop being mintable regardless of how many sold and the reveal countdown started.<br/>At this time instructions on Royalty passthrough will be posted to our social media profiles, all secondary sale royalties will be passed through to token holders</p>
             </TimelineContent>
           </TimelineItem>

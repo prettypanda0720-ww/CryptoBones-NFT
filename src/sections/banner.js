@@ -336,7 +336,7 @@ const Banner = () => {
                 onClick={onNormalMint}
                 disabled={isNormalMint}
               >
-                MINT
+                MINT WITH 0.05ETH
               </Button>
             </Box>
           );

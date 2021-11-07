@@ -99,7 +99,7 @@ contract AuctionNFT is ERC721, Ownable {
         uint256 secondsPassed = 0;
         secondsPassed = now.sub(_publicStartedAt);
         require(secondsPassed < PUBLIC_MINT_AVAILABLE_TIME, "Minting is ended.");
-        require(super.totalSupply() < MAX_SUPPLY, "Maximum supply reached.");
+        require(super.totalSupply() + mintCount <= MAX_SUPPLY, "Maximum supply reached.");
         require(mintCount > 0, "Mint count has to be more than 1.");
         require(_stagingValue == 2, "Public Minting is not allowed.");
         require(_countlist[msg.sender] + mintCount <= MAX_OWN_COUNT, "Overflow 10 tokens");
@@ -113,16 +113,19 @@ contract AuctionNFT is ERC721, Ownable {
         emit publicsaleSuccess(true);
     }
     
-    function requestNormalToken() external payable {
+    function requestNormalToken(uint mintCount) external payable {
         uint256 secondsPassed = 0;
         secondsPassed = now.sub(_normalStartedAt);
         require(secondsPassed < NORMAL_MINT_AVAILABLE_TIME, "Minting is ended.");
-        require(super.totalSupply() < MAX_SUPPLY, "Maximum supply reached.");
+        require(super.totalSupply() + mintCount < MAX_SUPPLY, "Maximum supply reached.");
         require(_stagingValue == 3, "Normal Minting is not allowed.");
-        require(_countlist[msg.sender] < MAX_OWN_COUNT, "Overflow 10 tokens");
-        require(msg.value == _endingPrice, "Invalid funds");
-        _tokenMint();
-        _countlist[msg.sender] = _countlist[msg.sender] + 1;
+        require(_countlist[msg.sender] + mintCount <= MAX_OWN_COUNT, "Overflow 10 tokens");
+        uint256 limitValue = getCurrentPrice().mul(mintCount);
+        require(msg.value == limitValue, "Invalid funds");
+        for (uint256 index = 0; index < mintCount; index++) {
+            _tokenMint();
+            _countlist[msg.sender] = _countlist[msg.sender] + 1;
+        }
         emit normalsaleSuccess(true);
     }
 
